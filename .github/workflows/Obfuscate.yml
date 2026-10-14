@@ -1,0 +1,31 @@
+name: Build Obfuscate BPB Panel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Download official BPB worker.js
+        run: |
+          wget -O _worker.js https://github.com/bia-pain-bache/BPB-Worker-Panel/releases/download/v4.2.3/worker.js || wget -O _worker.js https://github.com/bia-pain-bache/BPB-Worker-Panel/releases/latest/download/worker.js
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: ':arrow_up: update worker.js'
+          commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
